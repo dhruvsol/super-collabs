@@ -10,6 +10,8 @@ const Home: NextPage = () => {
             <div className="bg-yellow-400 opacity-30 row-start-4 col-span-2"></div>
             <div className="bg-yellow-300 opacity-30 col-start-9 row-start-6 col-span-2"></div>
             <div className="bg-yellow-400 opacity-30 row-start-3 col-start-9 col-span-2"></div>
+            <div className="bg-yellow-400 opacity-30 row-start-4 col-start-8 col-span-1"></div>
+            <div className="bg-yellow-500 opacity-30 col-start-3 row-start-5 col-span-1"></div>
           </div>
         </div>
         <div className="flex justify-center items-center flex-col min-h-screen ">
