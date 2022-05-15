@@ -1,10 +1,10 @@
-import { Allcollabcard } from "../components/allcollabcard";
+import { Allcollabcard } from "../../components/allcollabcard";
 import {
   NextPage,
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from "next";
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../../components/navbar";
 type collab = {
   skills: Array<any>;
   status: string;
@@ -25,8 +25,6 @@ type allcollabs = {
 const Allcollabs: NextPage = ({
   allcollab,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(allcollab.results);
-
   return (
     <>
       <div className="bg-neutral-900 relative min-h-screen">

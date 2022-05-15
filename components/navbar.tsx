@@ -8,7 +8,7 @@ export const Navbar = () => {
       <div>
         <ul className="flex justify-center gap-x-3 md:gap-x-14 opacity-100">
           <li
-            onClick={() => router.push("/allcollabs")}
+            onClick={() => router.push("/collabs")}
             className="cursor-pointer text-white font-bold hover:text-yellow-300 hover:border border border-transparent hover:border-yellow-300 p-2 rounded-lg"
           >
             All Collabs
@@ -18,6 +18,12 @@ export const Navbar = () => {
             className="cursor-pointer text-white font-bold hover:text-yellow-300 border border-transparent hover:border hover:border-yellow-300 p-2 rounded-lg"
           >
             My Collabs
+          </li>
+          <li
+            onClick={() => router.push("/profile")}
+            className="cursor-pointer text-white font-bold hover:text-yellow-300 border border-transparent hover:border hover:border-yellow-300 p-2 rounded-lg"
+          >
+            Profile
           </li>
           <li
             onClick={() => router.push("/")}

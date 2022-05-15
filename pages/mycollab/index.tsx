@@ -1,8 +1,8 @@
 import React from "react";
-import { Navbar } from "../components/navbar";
-import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { changeTab } from "../features/counter";
-import { Offer } from "../components/mycollabs/offer";
+import { Navbar } from "../../components/navbar";
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
+import { changeTab } from "../../features/counter";
+import { Offer } from "../../components/mycollabs/offer";
 const Mycollab = () => {
   const tab = useAppSelector((state) => state.Counter.value);
   const dispatch = useAppDispatch();
@@ -41,7 +41,7 @@ const Mycollab = () => {
                     ? `border-yellow-300 text-yellow-300`
                     : `border-white text-white`
                 }
-                 font-bold hover:text-yellow-300 hover:border border border-white  hover:border-yellow-300 p-2 rounded-lg`}
+                 font-bold hover:text-yellow-300 hover:border border   hover:border-yellow-300 p-2 rounded-lg`}
               >
                 Requested
               </li>
@@ -52,7 +52,7 @@ const Mycollab = () => {
                     ? `border-yellow-300 text-yellow-300`
                     : `border-white text-white`
                 }
-                 font-bold hover:text-yellow-300 hover:border border border-white  hover:border-yellow-300 p-2 rounded-lg`}
+                 font-bold hover:text-yellow-300  border   hover:border-yellow-300 p-2 rounded-lg`}
               >
                 Groups
               </li>
@@ -63,7 +63,7 @@ const Mycollab = () => {
                     ? `border-yellow-300 text-yellow-300`
                     : `border-white text-white`
                 }
-                 font-bold hover:text-yellow-300 hover:border border border-white  hover:border-yellow-300 p-2 rounded-lg`}
+                 font-bold hover:text-yellow-300 hover:border border   hover:border-yellow-300 p-2 rounded-lg`}
               >
                 My Offers
               </li>
