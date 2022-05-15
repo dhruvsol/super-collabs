@@ -4,6 +4,7 @@ import {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from "next";
+import { Navbar } from "../components/navbar";
 type collab = {
   skills: Array<any>;
   status: string;
@@ -39,10 +40,13 @@ const Allcollabs: NextPage = ({
             <div className="bg-yellow-500 opacity-50 col-start-3 row-start-5 col-span-1"></div>
           </div>
         </div>
+
+        <Navbar />
         <div className="flex py-5 items-center flex-col min-h-screen relative ">
           <h1 className="font-bold text-white text-3xl md:text-4xl lg:text-6xl xl:text-7xl ">
             All Collabs
           </h1>
+          {/* <div className="w-full flex justify-end"></div> */}
           <div className="md:grid md:grid-cols-2 pt-10 ">
             {allcollab.results.map((props: collab) => {
               const { title, description, id } = props;
@@ -63,7 +67,7 @@ const Allcollabs: NextPage = ({
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await fetch(
-    "https://intense-mesa-39554.herokuapp.com/v1/collabs?limit=100?&status=open"
+    "https://intense-mesa-39554.herokuapp.com/v1/collabs?&status=open"
   );
   const allcollab: allcollabs = await data.json();
   return { props: { allcollab } };

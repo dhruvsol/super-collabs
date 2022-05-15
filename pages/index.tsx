@@ -1,6 +1,40 @@
 import type { NextPage } from "next";
-
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { useMoralis } from "react-moralis";
 const Home: NextPage = () => {
+  const router = useRouter();
+  const [isPhantom, setIsPhantom] = useState(false);
+  const {
+    isAuthenticated,
+    authenticate,
+    isAuthenticating,
+    user,
+    logout,
+    isLoggingOut,
+  } = useMoralis();
+  console.log(isAuthenticated);
+
+  const storeUserId = async () => {
+    if (isAuthenticated) {
+      const res = await fetch(
+        `https://intense-mesa-39554.herokuapp.com/v1/users?walletAddress=${user?.attributes.solAddress}`
+      );
+      const data = await res.json();
+      const result = data.results[0].id;
+      localStorage.setItem("currentUser", result);
+    } else {
+      router.push("/");
+    }
+  };
+  const removeUserId = async (): Promise<void> => {
+    localStorage.removeItem("currentUser");
+  };
+  useEffect(() => {
+    if (user != null) {
+      storeUserId();
+    }
+  });
   return (
     <>
       <div className="bg-white relative min-h-screen">
@@ -21,9 +55,24 @@ const Home: NextPage = () => {
           <p className="pt-2  md:text-2xl lg:text-3xl ">
             Start with your collabration
           </p>
-          <button className="mt-5 p-2 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 ">
-            Get Started
-          </button>
+          {isAuthenticated ? (
+            <button
+              onClick={() => router.push("/allcollabs")}
+              className="mt-5 p-2 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 "
+            >
+              Get Started
+            </button>
+          ) : (
+            <button
+              onLoad={() => {
+                removeUserId();
+              }}
+              onClick={() => authenticate({ type: "sol" })}
+              className="mt-5 p-2 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 "
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </>
