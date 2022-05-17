@@ -19,7 +19,7 @@ type offerCollaborators = {
 export const Offer = ({
   offerCollaborators,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(offerCollaborators);
+  // console.log(offerCollaborators);
 
   return <>{/* <Offercard /> */}</>;
 };

@@ -26,7 +26,7 @@ export const Navbar = () => {
             Profile
           </li>
           <li
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/collabs/form")}
             className="cursor-pointer text-white font-bold hover:text-yellow-300 hover:border border border-transparent hover:border-yellow-300 p-2 rounded-lg"
           >
             Create Offer

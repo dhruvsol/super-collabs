@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     logout,
     isLoggingOut,
   } = useMoralis();
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   const storeUserId = async () => {
     if (isAuthenticated) {
@@ -57,7 +57,7 @@ const Home: NextPage = () => {
           </p>
           {isAuthenticated ? (
             <button
-              onClick={() => router.push("/allcollabs")}
+              onClick={() => router.push("/collabs")}
               className="mt-5 p-2 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 "
             >
               Get Started

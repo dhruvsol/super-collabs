@@ -1,10 +1,14 @@
+import { useRouter } from "next/router";
+
 interface collab {
   title: string;
   description: string;
+  id: string;
 }
 export const Allcollabcard = (collab: collab) => {
-  console.log(collab);
-  const { title, description } = collab;
+  // console.log(collab);
+  const { title, description, id } = collab;
+  const router = useRouter();
 
   return (
     <>
@@ -18,7 +22,10 @@ export const Allcollabcard = (collab: collab) => {
               {description}
             </p>
             <hr className="bg-black  w-full " />
-            <button className="mt-5 py-2 px-3   rounded-lg bg-yellow-400  cursor-pointer  hover:scale-110 hover:font-semibold lg:p-3 lg:mt-0">
+            <button
+              onClick={() => router.push(`/collabs/${id}`)}
+              className="mt-5 py-2 px-3   rounded-lg bg-yellow-400  cursor-pointer  hover:scale-110 hover:font-semibold lg:p-3 lg:mt-0"
+            >
               Details
             </button>
           </div>

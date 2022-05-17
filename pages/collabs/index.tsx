@@ -1,10 +1,7 @@
 import { Allcollabcard } from "../../components/allcollabcard";
-import {
-  NextPage,
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from "next";
+import { NextPage } from "next";
 import { Navbar } from "../../components/navbar";
+import { useEffect, useState } from "react";
 type collab = {
   skills: Array<any>;
   status: string;
@@ -22,9 +19,34 @@ type allcollabs = {
   totalResults: number;
 };
 
-const Allcollabs: NextPage = ({
-  allcollab,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Allcollabs: NextPage = () => {
+  const [allcollabs, setAllcollabs] = useState<allcollabs>();
+  const [page, setPage] = useState<number>(1);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (page < 1) {
+        setPage(1);
+      }
+      const userData = await fetch(
+        `https://intense-mesa-39554.herokuapp.com/v1/collabs?&status=open&page=${page}`
+      );
+      const currentUserInfo = await userData.json();
+      setAllcollabs(currentUserInfo);
+      if (page > allcollabs?.totalPages!) {
+        setPage(allcollabs?.totalPages!);
+      }
+    };
+    fetchData();
+  }, [page]);
+  const range = (start: number | undefined, end: number | undefined) => {
+    let length = end! - start! + 1;
+    return Array.from({ length }, (_, idx) => idx + start!);
+  };
+  const EmptyState = (value: number) => {
+    setAllcollabs(undefined);
+    setPage(value);
+  };
+
   return (
     <>
       <div className="bg-neutral-900 relative min-h-screen">
@@ -45,17 +67,70 @@ const Allcollabs: NextPage = ({
             All Collabs
           </h1>
           {/* <div className="w-full flex justify-end"></div> */}
-          <div className="md:grid md:grid-cols-2 pt-10 ">
-            {allcollab.results.map((props: collab) => {
+          <div className="md:grid md:grid-cols-2 pt-10 w-full ">
+            {allcollabs?.results.map((props: collab) => {
               const { title, description, id } = props;
               return (
                 <>
                   <div key="1">
-                    <Allcollabcard title={title} description={description} />
+                    <Allcollabcard
+                      title={title}
+                      description={description}
+                      id={id}
+                    />
                   </div>
                 </>
               );
             })}
+          </div>
+          <div className="flex justify-center text-white gap-8 items-center py-10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={() => setPage(page - 1)}
+              className="h-8 w-8 text-white hover:text-yellow-300 cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            {range(1, allcollabs?.totalPages).map((value, index) => {
+              return (
+                <>
+                  <h1
+                    key={index}
+                    onClick={() => {
+                      EmptyState(value);
+                    }}
+                    className="cursor-pointer hover:text-blue-button"
+                  >
+                    {value}
+                  </h1>
+                </>
+              );
+            })}
+            {/* <h1 className="cursor-pointer hover:text-blue-button">1</h1> */}
+
+            <svg
+              onClick={() => setPage(page + 1)}
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 hover:text-yellow-300 cursor-pointer"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </div>
         </div>
       </div>
@@ -63,11 +138,4 @@ const Allcollabs: NextPage = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await fetch(
-    "https://intense-mesa-39554.herokuapp.com/v1/collabs?&status=open"
-  );
-  const allcollab: allcollabs = await data.json();
-  return { props: { allcollab } };
-};
 export default Allcollabs;
