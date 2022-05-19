@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Navbar } from "../../components/navbar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { addressKey } from "../../features/counter";
 type user = {
   skills: Array<string>;
   daoXP: number;
@@ -14,6 +14,7 @@ type user = {
 
 const MyProfile = () => {
   const [user, setUser] = useState<user>();
+  const [tab, setTab] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       const userData = await fetch(
@@ -24,6 +25,7 @@ const MyProfile = () => {
     };
     fetchData();
   }, []);
+  console.log(addressKey);
 
   return (
     <>
@@ -72,6 +74,28 @@ const MyProfile = () => {
                   user?.walletAddress.length
                 )}
             </h1>
+          </div>
+          <div className="flex justify-center md:justify-start gap-x-10 pt-10">
+            <button
+              onClick={() => setTab(false)}
+              className={`cursor-pointer  font-bold hover:text-yellow-300 hover:border border ${
+                tab === false
+                  ? `border-yellow-300 text-yellow-300`
+                  : `border-white text-white`
+              }   hover:border-yellow-300 p-2 rounded-lg`}
+            >
+              Tab1
+            </button>
+            <button
+              onClick={() => setTab(true)}
+              className={`cursor-pointer  font-bold hover:text-yellow-300 hover:border border ${
+                tab === true
+                  ? `border-yellow-300 text-yellow-300`
+                  : `border-white text-white`
+              }   hover:border-yellow-300 p-2 rounded-lg`}
+            >
+              Tab2
+            </button>
           </div>
         </div>
       </div>

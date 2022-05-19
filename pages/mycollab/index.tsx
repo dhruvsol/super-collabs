@@ -3,9 +3,32 @@ import { Navbar } from "../../components/navbar";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { changeTab } from "../../features/counter";
 import { Offer } from "../../components/mycollabs/offer";
+import { Requestcard } from "../../components/mycollabs/cards/requestcard";
+import { Groupcard } from "../../components/mycollabs/cards/groupcard";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { Main } from "../../components/mycollabs/Main";
+
+type collaborators = {
+  status: string;
+  commitHours: number;
+  collab: string;
+  user: string;
+  note: string;
+  id: string;
+};
+
+type offerCollaborators = {
+  results: Array<any>;
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalResults: number;
+};
+
 const Mycollab = () => {
   const tab = useAppSelector((state) => state.Counter.value);
   const dispatch = useAppDispatch();
+
   return (
     <>
       <div className="bg-neutral-900 relative min-h-screen">
@@ -75,9 +98,10 @@ const Mycollab = () => {
             </div>
           </div>
         </div>
-        <Offer />
+        <Main />
       </div>
     </>
   );
 };
+
 export default Mycollab;

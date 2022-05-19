@@ -16,3 +16,27 @@ export const UserName = (user: User) => {
   }, [user.userId]);
   return <>{name}</>;
 };
+
+export const GetUseNameCollab = (collab: User) => {
+  const [name, setName] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");
+  useEffect(() => {
+    const GetUserId = async () => {
+      const collabInfo = await fetch(
+        `https://intense-mesa-39554.herokuapp.com/v1/collabs/${collab}`
+      );
+      const userId = await collabInfo.json();
+      setUserId(userId.createdBy);
+    };
+    GetUserId();
+    const fetchData = async () => {
+      const data = await fetch(
+        `https://intense-mesa-39554.herokuapp.com/v1/users/${userId}`
+      );
+      const username = await data.json();
+      setName(username.name);
+    };
+    fetchData();
+  }, [collab, userId]);
+  return <>{name}</>;
+};

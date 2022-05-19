@@ -1,5 +1,5 @@
 import { Offercard } from "./cards/offercard";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { useEffect, useState } from "react";
 type collaborators = {
   status: string;
   commitHours: number;
@@ -16,17 +16,36 @@ type offerCollaborators = {
   totalPages: number;
   totalResults: number;
 };
-export const Offer = ({
-  offerCollaborators,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  // console.log(offerCollaborators);
+export const Offer = () => {
+  const [data, setData] = useState<offerCollaborators>();
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetch(
+        `https://intense-mesa-39554.herokuapp.com/v1/collaborators?&status=offered&user=${localStorage.currentUser}`
+      );
+      const collaborator = await data.json();
+      setData(collaborator);
+    };
+    fetchData();
+  }, []);
 
-  return <>{/* <Offercard /> */}</>;
-};
-export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await fetch(
-    "https://intense-mesa-39554.herokuapp.com/v1/collaborators/62303d89a51798256081cc02"
+  return (
+    <>
+      {data?.results.map((offers: collaborators) => {
+        const { note, id, collab, commitHours } = offers;
+        return (
+          <>
+            <div key={collab + id}>
+              <Offercard
+                description={note}
+                id={id}
+                collab={collab}
+                commitHours={commitHours}
+              />
+            </div>
+          </>
+        );
+      })}
+    </>
   );
-  const offerCollaborators: offerCollaborators = await data.json();
-  return { props: { offerCollaborators } };
 };

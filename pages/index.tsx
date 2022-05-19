@@ -2,6 +2,8 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
+import { useAppDispatch } from "../store/hooks";
+import { setAddress } from "../features/counter";
 const Home: NextPage = () => {
   const router = useRouter();
   const [isPhantom, setIsPhantom] = useState(false);
@@ -14,7 +16,7 @@ const Home: NextPage = () => {
     isLoggingOut,
   } = useMoralis();
   // console.log(isAuthenticated);
-
+  const dispatch = useAppDispatch();
   const storeUserId = async () => {
     if (isAuthenticated) {
       const res = await fetch(
@@ -23,6 +25,7 @@ const Home: NextPage = () => {
       const data = await res.json();
       const result = data.results[0].id;
       localStorage.setItem("currentUser", result);
+      dispatch(setAddress(result));
     } else {
       router.push("/");
     }

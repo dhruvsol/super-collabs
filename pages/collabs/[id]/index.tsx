@@ -4,6 +4,7 @@ import { Navbar } from "../../../components/navbar";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { UserName } from "../../../components/collabs/UserName";
 import { useRouter } from "next/router";
+import { useState } from "react";
 type Collab = {
   skills: Array<any>;
   status: string;
@@ -19,6 +20,7 @@ const CollabDetails = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   console.log(collab);
   const router = useRouter();
+  const [form, setForm] = useState<boolean>(false);
   return (
     <>
       <div className="bg-neutral-900 relative min-h-screen">
@@ -98,12 +100,61 @@ const CollabDetails = ({
               </div>
             </div>
             <div className="flex justify-center items-center md:justify-start">
-              <button className="mt-5 py-2 px-6 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 ">
+              <button
+                onClick={() => setForm(true)}
+                className="mt-5 py-2 px-6 rounded-lg bg-yellow-400  cursor-pointer z-10 hover:scale-110 hover:font-semibold lg:p-3 lg:mt-8 "
+              >
                 Apply
               </button>
             </div>
           </div>
         </div>
+        {form && (
+          <>
+            <div className="z-40 fixed  transition-opacity w-full">
+              <div className="w-full flex justify-center items-center">
+                <div className="fixed inset-0 bg-light-black backdrop-blur-sm">
+                  <div className="flex justify-center min-h-screen items-center">
+                    <div className="w-96 h-max bg-white rounded-2xl py-10">
+                      <div className="flex justify-center items-center flex-col gap-y-6 pt-10 px-5  ">
+                        <div className="relative border border-gray-300 rounded-md px-2 py-2 shadow-sm focus-within:ring-1 w-full ">
+                          <label
+                            htmlFor="name"
+                            className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900"
+                          >
+                            Commited Hours
+                          </label>
+                          <input
+                            className=" resize-none lg:text-lg block w-full border-0 p-0 text-black placeholder-gray-500 focus:ring-0 sm:text-sm focus-visible:outline-none"
+                            placeholder=" Commited Hours"
+                          />
+                        </div>
+                        <div className="w-full relative border border-gray-300 rounded-md px-2 py-2 shadow-sm focus-within:ring-1 ">
+                          <label
+                            htmlFor="name"
+                            className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-white text-xs font-medium text-gray-900"
+                          >
+                            Note
+                          </label>
+                          <input
+                            className=" resize-none lg:text-lg block w-full border-0 p-0 text-black placeholder-gray-500 focus:ring-0 sm:text-sm focus-visible:outline-none"
+                            placeholder="Note for the collab Lead"
+                          />
+                        </div>
+                        <button
+                          onClick={() => setForm(false)}
+                          className="w-24 h-10 bg-yellow-300 rounded-xl"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

@@ -20,7 +20,7 @@ export const Navbar = () => {
             My Collabs
           </li>
           <li
-            onClick={() => router.push("/profile")}
+            onClick={() => router.push(`/profile/${localStorage.currentUser}`)}
             className="cursor-pointer text-white font-bold hover:text-yellow-300 border border-transparent hover:border hover:border-yellow-300 p-2 rounded-lg"
           >
             Profile
