@@ -2,22 +2,58 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { store } from "../store/store";
 import { Provider } from "react-redux";
-import { MoralisProvider } from "react-moralis";
+import {
+  GlowWalletAdapter,
+  LedgerWalletAdapter,
+  PhantomWalletAdapter,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolletExtensionWalletAdapter,
+  SolletWalletAdapter,
+  TorusWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 import nProgress from "nprogress";
 import Router from "next/router";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { useMemo } from "react";
+import { clusterApiUrl } from "@solana/web3.js";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 Router.events.on("routeChangeStart", nProgress.start);
 Router.events.on("routeChangeError", nProgress.done);
 Router.events.on("routeChangeComplete", nProgress.done);
 function MyApp({ Component, pageProps }: AppProps) {
-  const appId = process.env.NEXT_PUBLIC_APP_ID!;
-  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL!;
+  const network = WalletAdapterNetwork.Devnet;
+
+  // You can also provide a custom RPC endpoint.
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const wallets = useMemo(
+    () => [
+      new LedgerWalletAdapter(),
+      new PhantomWalletAdapter(),
+      new GlowWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new SolletExtensionWalletAdapter(),
+      new SolletWalletAdapter(),
+      new SolflareWalletAdapter({ network }),
+      new TorusWalletAdapter(),
+    ],
+    [network]
+  );
   return (
     <>
       <Provider store={store}>
-        <MoralisProvider appId={appId} serverUrl={serverUrl}>
-          <Component {...pageProps} />
-        </MoralisProvider>
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              {<Component {...pageProps} />}
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
       </Provider>
     </>
   );
